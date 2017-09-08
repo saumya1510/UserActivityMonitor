@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name = "viewport" content = "width=device-width, initial-scale=1">
+	<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+	<title>Adaptive Web Assignment</title>
+	<script>
+		function passToFile(clickDetails){
+			var xhr = new XMLHttpRequest();
+			console.log({{ userName|tojson }});
+			var url = "/user/" + {{ userName|tojson }} + "/clicks";
+			console.log(url);
+			xhr.open("POST", url, true);
+			uriData = "clickDetails=" + encodeURIComponent(clickDetails);
+			console.log(uriData);
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.onreadystatechange = function() {//Call a function when the state changes.
+ 				if(xhr.readyState == 4 && xhr.status == 200) {
+		    		console.log(xhr.responseText);
+    			}
+			}
+			xhr.send(uriData);
+		}
+		function recordBodyClicks(event){
+			clickDetails = Date.now() + "," + event.clientX + "," + event.clientY;
+			passToFile(clickDetails);
+		}
+
+		function landingFunction(){
+			var body = document.getElementsByTagName('body')[0];
+      		body.addEventListener("click", recordBodyClicks);
+      	}
+	</script>
+	<style>
+		#log-column{
+			height: 400px;
+			overflow-y: scroll;
+		}
+	</style>
+</head>
+
+<body onload = "landingFunction();">
+	<section class = "hero is-dark">
+		<div class = "hero-body">
+			<div class = "container">
+				<h1 class = "title">
+					{{userName}}
+				</h1>
+			</div>
+		</div>
+	</section>
+	<nav class = "navbar">
+		<div class = "navbar-brand">
+			<a class = "navbar-item is-active" href = "#">User Profile</a>
+		</div>
+		<div class = "navbar-menu">
+			<div class = "navbar-start">
+				<a class = "navbar-item" href = "https://stackoverflow.com/questions/tagged/java?sort=frequent&pageSize=15">
+					Stack Overflow
+				</a>
+			</div>
+			<div class = "navbar-end">
+				<a class = "navbar-item" href = "/user/logout">Logout</a>
+			</div>
+		</div>
+	</nav>
+	<div class = "columns">
+		<div class = "column is-half"></div>
+		<div class = "column is-half"></div>
+	</div>
+	<div class = "columns">
+		<div class = "column"></div>
+		<div class = "column box" id = "log-column">
+			<div class = "level">
+				<div class = "level-item has-text-centered">
+					<div class = "title">
+						User Log
+					</div>
+				</div>
+			</div>
+			<div class = "level">
+				<div class = "level-item has-text-centered">
+					{{userlog|safe}}
+				</div>
+			</div>
+		</div>
+		<div class = "column"></div>
+	</div>
+	<div class = "container is-fullhd">
+		<div class = "notification has-text-centered">
+			<p class = "title">Activities Logged</p>
+		</div>
+	</div>
+	<div class = "columns">
+		<div class = "column is-half"></div>
+		<div class = "column is-half"></div>
+	</div>
+	<div class = "container is-fluid">
+	<div class = "columns">
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">Question Tags</p>
+			<div class = "content has-text-justify">
+				For every new Stack Overflow page accessed by the user, we record the tags of the question to get an idea of the topics the user is interested in. For all events, the page url is recorded, which provides the question text as well. Thus, we can later provide suggestions and posts based on the topics preferred by the user.
+			</div>
+		</div>
+		</div>
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">Page Scrolled</p>
+			<div class = "content">
+				If a user scrolls down a page, we can assume that the user is interested in the question. Consequently, if the user scrolls to the bottom of the page, it can be assumed that the accepted answer for that particular question did not work for the user. Thus, we record the amount of page scrolled by the user for a particular url. 
+			</div>
+		</div>
+		</div>
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">User Inactivity</p>
+			<div class = "content">
+				A user staying idle on a page could mean either of two things: 
+				<ol>
+				<li>The user got distracted</li>
+				<li>The user is reading the content given on that page</li>
+				</ol>
+			</div>
+		</div>
+		</div> 
+	</div>
+	<div class = "columns">
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">Clicks</p>
+			<div class = "content">
+				To be specific, all the clicks on the anchor elements. Thus we can record the following actions:<ul>
+					<li>Upvotes and Downvotes</li>
+					<li>Favorites and "Un-favorites"</li>
+					<li>Shares and Edits</li>
+					<li>Expand Comments</li>
+					</ul>
+				The data gathered from these actions can provide us information on user preferences.
+			</div>
+		</div>
+		</div>
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">Copied Content</p>
+			<div class = "content has-text-justify">
+				Often, a user would like to try out the code given in the answers. We record whenever the user copies something from the page using "CTRL+C" or "Right Click -> Copy". The event records the class of the element copied, and the text is contained. The text may not always be coherent, as often these are placed in nested elements. However, a copying action would indicate that the user is most likely facing the problem given in that particular post and not just browsing through it.
+			</div>
+		</div>
+		</div>
+		<div class = "column">
+		<div class = "box">
+			<p class = "subtitle has-text-centered">Answer a Post</p>
+			<div class = "content has-text-justify">
+				Whenever a user clicks on the submit button to post an answer, we record the event. Since we are getting the tags and the question (through the URL), we can which topics is the user proficient in, and provide them similar questions that they can answer. There's a possibility that the user clicked on the submit button by mistake and wasn't really posting an answer. That is checked by determining whether the input area above the submit button is empty or not. 
+			</div>
+		</div>
+		</div>
+
+	</div>
+	</div>
+</body>
+</html>
