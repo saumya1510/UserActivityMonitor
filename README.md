@@ -1,8 +1,12 @@
+The chrome extension tracks user activity on stack overflow, such as clicks, scrolls, question tags, etc. The python server logs these events on an MLab database (MongoDB). The details on the activities can be seen on the [website](saumya-cse591.herokuapp.com). 
+
+Download the required libraries using `pip install -r requirements.txt`
+Change the MLab authentication and location in application.py
+
 To run the files locally:
 
 1. Load the unpacked extension:
-	- chrome://extensions -> Load unpacked extension -> Select "Local Extension" Folder
-	- Disable "Heroku Monitor" extension if present.
+	chrome://extensions -> Load unpacked extension -> Select "Local Extension" Folder
 	[The differences between the two are in manifest->permissions and content.js->url]
 2. Make sure you have python 3.4 or above, and pip.
 3. Go to command line, and type "pip install -r requirements.txt"
@@ -14,10 +18,7 @@ To run the files locally:
 
 To run the website:
 1. Go to "saumya-cse591.herokuapp.com" in the chrome browser.
-2. Make sure you have disabled the "Local Monitor" and enabled "Heroku Monitor" in "chrome://extensions"
+2. Change the URL in Extensions/content.js to "saumya-cse591.herokuapp.com" and add the url to permissions
 3. Login using username as "aaa" or "bbb" or "ccc" and password "123"
 
-The database can be checked on MLab: "mlab.com/databases/adaptive_web#collections"
-Username = saumya1510
-Password = LoLLapalOOza123
 
