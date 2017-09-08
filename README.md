@@ -16,9 +16,4 @@ To run the files locally:
 7. Type the url in the chrome browser and login using username as "aaa" or "bbb" or "ccc" and password "123"
 
 
-To run the website:
-1. Go to "saumya-cse591.herokuapp.com" in the chrome browser.
-2. Change the URL in Extensions/content.js to "saumya-cse591.herokuapp.com" and add the url to permissions
-3. Login using username as "aaa" or "bbb" or "ccc" and password "123"
-
 
