@@ -1,4 +1,4 @@
-The chrome extension tracks user activity on stack overflow, such as clicks, scrolls, question tags, etc. The python server logs these events on an MLab database (MongoDB). The details on the activities can be seen on the [website](saumya-cse591.herokuapp.com). 
+The chrome extension tracks user activity on stack overflow, such as clicks, scrolls, question tags, etc. The python server logs these events on an MLab database (MongoDB). The details on the activities can be seen on the [website](https://saumya-cse591.herokuapp.com). 
 
 Download the required libraries using `pip install -r requirements.txt`
 Change the MLab authentication and location in application.py
